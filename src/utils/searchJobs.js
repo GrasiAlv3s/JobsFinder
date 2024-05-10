@@ -3,7 +3,7 @@ import { urlList } from "../../link.js";
 
 async function searchJobs(searchQuery) {
   const browser = await puppeteer.launch({
-    headless: true,
+    headless: false,
     defaultViewport: null,
     userDataDir: "/tmp/myChromeSession",
   });
