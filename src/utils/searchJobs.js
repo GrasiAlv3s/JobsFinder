@@ -1,9 +1,9 @@
 import puppeteer from "puppeteer";
-import { urlList } from "../../link.js"; // Supondo que 'urlList' é um array de URLs.
+import { urlList } from "../../link.js";
 
 async function searchJobs(searchQuery) {
   const browser = await puppeteer.launch({
-    headless: false, // Altere para true se estiver rodando em produção ou em um ambiente sem GUI.
+    headless: true,
     defaultViewport: null,
     userDataDir: "/tmp/myChromeSession",
   });
@@ -14,7 +14,7 @@ async function searchJobs(searchQuery) {
 
     for (const url of urlList) {
       try {
-        await page.goto(url, { waitUntil: "networkidle0" }); // Espera até que a rede esteja completamente inativa.
+        await page.goto(url, { waitUntil: "networkidle0" });
         const inputSelector = '[data-testid="job-search"]';
         await page.waitForSelector(inputSelector);
         await page.click(inputSelector);
