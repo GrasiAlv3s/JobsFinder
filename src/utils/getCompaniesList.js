@@ -28,12 +28,10 @@ const companyElements = Array.from(
 );
 
 openMenu();
-const companies = Array.from(companyElements).map((_, index) => {
+const companies = Array.from(companyElements).map((companyElement, index) => {
   const button = companyElements[index];
   button.click();
-  const aboutLink = document.querySelector(
-    `#radix-${index} a[aria-label^="Sobre"]`
-  );
+  const aboutLink = companyElement.querySelector(`a[aria-label^="Sobre"]`);
   let companyInfo = {};
   if (aboutLink) {
     console.log("aboutLink: ", aboutLink);

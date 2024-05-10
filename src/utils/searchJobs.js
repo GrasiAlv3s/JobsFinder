@@ -14,7 +14,7 @@ async function searchJobs(searchQuery) {
 
     for (const url of urlList) {
       try {
-        await page.goto(url, { waitUntil: "networkidle0" });
+        await page.goto(url.link, { waitUntil: "networkidle0" });
         const inputSelector = '[data-testid="job-search"]';
         await page.waitForSelector(inputSelector);
         await page.click(inputSelector);
