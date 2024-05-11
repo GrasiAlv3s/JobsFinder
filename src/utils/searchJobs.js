@@ -1,5 +1,6 @@
 import puppeteer from "puppeteer";
 import { urlList } from "../../link.js";
+import fs from "fs";
 
 async function searchJobs(searchQuery) {
   const browser = await puppeteer.launch({
@@ -8,46 +9,66 @@ async function searchJobs(searchQuery) {
     userDataDir: "/tmp/myChromeSession",
   });
 
+  let allJobs = [];
+
   try {
     const page = await browser.newPage();
-    debugger;
+    const ListSearch = [
+      "front",
+      // "back",
+      // "fullstack",
+      // "devops",
+      // "mobile",
+      // searchQuery,
+    ];
 
     for (const url of urlList) {
-      try {
-        await page.goto(url.link, { waitUntil: "networkidle0" });
-        const inputSelector = '[data-testid="job-search"]';
-        await page.waitForSelector(inputSelector);
-        await page.click(inputSelector);
-        await page.type(inputSelector, searchQuery);
-        await page.keyboard.press("Enter");
+      for (const query of ListSearch) {
+        try {
+          await page.goto(url.link, { waitUntil: "networkidle0" });
+          const inputSelector = '[data-testid="job-search"]';
+          await page.waitForSelector(inputSelector);
+          await page.click(inputSelector);
+          await page.type(inputSelector, query);
+          await page.keyboard.press("Enter");
 
-        const vagas = await page.evaluate(() => {
-          const itens = Array.from(
-            document.querySelectorAll('ul[data-testid="job-list__list"] > li')
-          );
-          return itens.map((li) => {
-            const nomeVaga = li.querySelector(
-              "div.sc-d868c80d-5.exscXv"
-            )?.innerText;
-            const linkVaga = li.querySelector(
-              'a[data-testid="job-list__listitem-href"]'
-            )?.href;
-            return { nomeVaga, linkVaga };
+          const vagas = await page.evaluate(() => {
+            const itens = Array.from(
+              document.querySelectorAll('ul[data-testid="job-list__list"] > li')
+            );
+            // const result {}
+            return itens.map((li) => {
+              const nomeVaga = li.querySelector(
+                "div>  div:nth-child(1)"
+              )?.innerText;
+              const modeloVaga = li.querySelector(
+                "div>  div:nth-child(2)"
+              )?.innerText;
+              const linkVaga = li.querySelector(
+                'a[data-testid="job-list__listitem-href"]'
+              )?.href;
+              console.log("modeloVaga: ", modeloVaga);
+              return { nomeVaga, linkVaga, modeloVaga };
+            });
           });
-        });
 
-        console.log(vagas);
-      } catch (err) {
-        console.error(`Erro ao processar a URL ${url}: ${err}`);
+          allJobs = allJobs.concat(vagas);
+        } catch (err) {
+          console.error(`Erro ao processar a URL ${url}: ${err}`);
+        }
       }
     }
   } catch (err) {
     console.error(`Erro geral: ${err}`);
   } finally {
-    // await browser.close();
-    console.log("acabou");
+    await browser.close();
+    fs.writeFile("jobResults.json", JSON.stringify(allJobs, null, 2), (err) => {
+      if (err) {
+        console.error("Erro ao salvar o arquivo:", err);
+      } else {
+        console.log("Dados salvos em jobResults.json");
+      }
+    });
   }
 }
-
-searchJobs("front");
 export default searchJobs;
