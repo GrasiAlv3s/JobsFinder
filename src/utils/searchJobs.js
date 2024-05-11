@@ -2,6 +2,7 @@ import puppeteer from "puppeteer";
 import { urlList } from "../../link.js";
 import fs from "fs";
 
+const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 async function searchJobs(searchQuery) {
   const browser = await puppeteer.launch({
     headless: false,
@@ -15,14 +16,15 @@ async function searchJobs(searchQuery) {
     const page = await browser.newPage();
     const ListSearch = [
       "front",
-      // "back",
-      // "fullstack",
-      // "devops",
-      // "mobile",
+      "back",
+      "fullstack",
+      "devops",
+      "mobile",
       // searchQuery,
     ];
 
     for (const url of urlList) {
+      let companyJobs = { empresa: url.name, vagas: [] };
       for (const query of ListSearch) {
         try {
           await page.goto(url.link, { waitUntil: "networkidle0" });
@@ -36,7 +38,6 @@ async function searchJobs(searchQuery) {
             const itens = Array.from(
               document.querySelectorAll('ul[data-testid="job-list__list"] > li')
             );
-            // const result {}
             return itens.map((li) => {
               const nomeVaga = li.querySelector(
                 "div>  div:nth-child(1)"
@@ -47,16 +48,25 @@ async function searchJobs(searchQuery) {
               const linkVaga = li.querySelector(
                 'a[data-testid="job-list__listitem-href"]'
               )?.href;
-              console.log("modeloVaga: ", modeloVaga);
-              return { nomeVaga, linkVaga, modeloVaga };
+              const data = new Date().toISOString();
+              return {
+                nomeVaga,
+                linkVaga,
+                modeloVaga,
+                data,
+              };
             });
           });
-
-          allJobs = allJobs.concat(vagas);
+          delay(6);
+          companyJobs.vagas.push(...vagas);
         } catch (err) {
-          console.error(`Erro ao processar a URL ${url}: ${err}`);
+          console.error(
+            `Erro ao processar a URL ${url.link} da ${url.name}: ${err}`
+          );
         }
       }
+
+      allJobs.push(companyJobs);
     }
   } catch (err) {
     console.error(`Erro geral: ${err}`);
@@ -71,4 +81,5 @@ async function searchJobs(searchQuery) {
     });
   }
 }
+// searchJobs();
 export default searchJobs;
