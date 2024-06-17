@@ -3,8 +3,9 @@ import { urlList } from "../../link.js";
 import fs from "fs";
 import path from "path";
 
-const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
-async function searchJobs(searchQuery) {
+// const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+async function searchJobs() {
   const browser = await puppeteer.launch({
     headless: false,
     defaultViewport: null,
@@ -16,13 +17,14 @@ async function searchJobs(searchQuery) {
   try {
     const page = await browser.newPage();
     const ListSearch = [
-      "front",
-      "back",
-      "fullstack",
-      "devops",
-      "mobile",
-      "junior",
-      searchQuery,
+      // "front",
+      // "back",
+      // "fullstack",
+      // "devops",
+      // "mobile",
+      // "junior",
+      "java",
+      "jr",
     ];
 
     for (const url of urlList) {
@@ -54,7 +56,7 @@ async function searchJobs(searchQuery) {
               return { nomeVaga, linkVaga, modeloVaga, data };
             });
           });
-          delay(6);
+          // delay(6);
           companyJobs.vagas.push(...vagas);
         } catch (err) {
           console.error(
@@ -105,4 +107,5 @@ async function searchJobs(searchQuery) {
     });
   }
 }
+searchJobs();
 export default searchJobs;

@@ -14,9 +14,9 @@ app.get("/get-list", async (req, res) => {
   res.send(response);
 });
 
-app.get("/test/:searchQuery", async (req, res) => {
-  const { searchQuery } = req.params;
-  const response = await searchJobs(searchQuery);
+app.get("/test/", async (req, res) => {
+  // const { searchQuery } = req.params;
+  const response = await searchJobs();
 
   res.send(response);
 });
