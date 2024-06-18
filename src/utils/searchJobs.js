@@ -13,7 +13,6 @@ async function searchJobs() {
   });
 
   let newJobs = [];
-
   try {
     const page = await browser.newPage();
     const ListSearch = [
@@ -32,16 +31,32 @@ async function searchJobs() {
       for (const query of ListSearch) {
         try {
           await page.goto(url.link, { waitUntil: "networkidle0" });
+          const amount = await page.evaluate(() => {
+            const amount = document.querySelector(
+              'p[data-testid="job-list-amount"]'
+            )?.innerText;
+            return amount;
+          });
+          if (amount > 10) {
+            console.log("amount: ", amount);
+            const itemPorPag = document.querySelector(
+              'input[name="items-por-pagina"]'
+            );
+            if (itemPorPag) {
+              itemPorPag.value = "50";
+            }
+          }
+
           const inputSelector = '[data-testid="job-search"]';
           await page.waitForSelector(inputSelector);
           await page.click(inputSelector);
           await page.type(inputSelector, query);
           await page.keyboard.press("Enter");
-
           const vagas = await page.evaluate(() => {
             const itens = Array.from(
               document.querySelectorAll('ul[data-testid="job-list__list"] > li')
             );
+
             return itens.map((li) => {
               const nomeVaga = li.querySelector(
                 "div> div:nth-child(1)"
