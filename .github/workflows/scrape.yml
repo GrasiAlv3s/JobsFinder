@@ -1,128 +1,108 @@
-# Nome do workflow: define o propósito do workflow como a execução de scrapers para Job e a publicação dos resultados.
-name: Scrape Job and push results
+name: Scrape Job and push results # Nome do workflow: define o propósito do workflow como a execução de scrapers para Job e a publicação dos resultados.
 
-# Eventos que acionam o workflow:
 on:
   push:
     branches:
-      - main                 # Executa o workflow quando há um push na branch "main".
+      - main # Executa o workflow quando há um push na branch "main".
   schedule:
-    - cron: "40 4 * * *"     # Executa o workflow diariamente às 4:40 UTC.
-  workflow_dispatch:         # Permite a execução manual do workflow.
+    - cron: "40 4 * * *" # Executa o workflow diariamente às 4:40 UTC.
+  workflow_dispatch: # Permite a execução manual do workflow.
 
 jobs:
   Job-scraper:
-    runs-on: ubuntu-latest    # Define o ambiente do job como a última versão do Ubuntu.
+    runs-on: ubuntu-latest # Define o ambiente do job como a última versão do Ubuntu.
 
-    # Armazena o caminho do artifact gerado, que será usado em jobs subsequentes.
-    outputs:
+    outputs: # Armazena o caminho do artifact gerado, que será usado em jobs subsequentes.
       artifact-path: ${{ steps.upload-Job-artifact.outputs.artifact-path }}
 
     steps:
-      # Etapa 1: Faz o checkout do repositório para acessar o código fonte.
-      - name: Checkout repository
+      - name: Checkout repository # Etapa 1: Faz o checkout do repositório para acessar o código fonte.
         uses: actions/checkout@v4
 
-      # Etapa 2: Configura a versão do Node.js necessária para rodar o scraper.
-      - name: Set up Node.js
+      - name: Set up Node.js # Etapa 2: Configura a versão do Node.js necessária para rodar o scraper.
         uses: actions/setup-node@v4
         with:
           node-version: "20"
 
-      # Etapa 3: Instala as dependências do projeto.
-      - name: Install dependencies
+      - name: Install dependencies # Etapa 3: Instala as dependências do projeto.
         run: npm install
 
-      # Etapa 4: Instala o Xvfb (X virtual framebuffer), necessário para executar navegadores em modo gráfico no servidor.
-      - name: Install Xvfb
+      - name: Install Xvfb # Etapa 4: Instala o Xvfb (X virtual framebuffer), necessário para executar navegadores em modo gráfico no servidor.
         run: sudo apt-get install -y xvfb
 
-      # Etapa 5: Cria o diretório "data/results" para armazenar os resultados da raspagem, caso ele ainda não exista.
-      - name: Create data artifact directory if not exists
+      - name: Create data artifact directory if not exists # Etapa 5: Cria o diretório "data/results" para armazenar os resultados da raspagem, caso ele ainda não exista.
         run: mkdir -p data/results
 
-      # Etapa 6: Executa o scraper Job, definindo o display do Xvfb para rodar o navegador de forma headless.
-      - name: Run Job scraper
+      - name: Run Job scraper # Etapa 6: Executa o scraper Job, definindo o display do Xvfb para rodar o navegador de forma headless.
         run: |
-          Xvfb :99 -ac &                   # Inicia o servidor Xvfb.
-          export DISPLAY=:99               # Define o display para o navegador.
-          node src/sever.js     # Executa o script do scraper Job.
+          Xvfb :99 -ac & # Inicia o servidor Xvfb.
+          export DISPLAY=:99 # Define o display para o navegador.
+          node src/sever.js # Executa o script do scraper Job.
 
-      # Etapa 7: Salva os resultados e capturas de tela como um artifact chamado "Job-results" para serem usados em outros jobs.
-      - name: Save Job results and screenshots as an artifact
+      - name: Save Job results and screenshots as an artifact # Etapa 7: Salva os resultados e capturas de tela como um artifact chamado "Job-results" para serem usados em outros jobs.
         id: upload-Job-artifact
         uses: actions/upload-artifact@v4
         with:
-          name: Job-results                # Nome do artifact.
-          path: data/results               # Caminho do diretório dos resultados.
+          name: Job-results # Nome do artifact.
+          path: data/results # Caminho do diretório dos resultados.
 
-   download-and-update-repo:
-    runs-on: ubuntu-latest                 # Define o ambiente do job como a última versão do Ubuntu.
-    needs: [Job-scraper]      # Define dependência para os jobs de raspagem, garantindo que ambos tenham sucesso antes de rodar.
+  download-and-update-repo:
+    runs-on: ubuntu-latest # Define o ambiente do job como a última versão do Ubuntu.
+    needs: [Job-scraper] # Define dependência para os jobs de raspagem, garantindo que ambos tenham sucesso antes de rodar.
 
     steps:
-      # Etapa 1: Faz o checkout do repositório para acessar o código fonte.
-      - name: Checkout repository
+      - name: Checkout repository # Etapa 1: Faz o checkout do repositório para acessar o código fonte.
         uses: actions/checkout@v4
 
-      # Etapa 2: Clona o repositório de destino (`Jop-API`) onde os dados serão salvos.
-      - name: Clone the target repository
+      - name: Clone the target repository # Etapa 2: Clona o repositório de destino (`Job-API`) onde os dados serão salvos.
         run: |
-          git clone https://github.com/${{ secrets.TARGET_REPO_URL }}.git Jop-API
+          git clone https://github.com/${{ secrets.TARGET_REPO_URL }}.git Job-API
         env:
           GITHUB_TOKEN: ${{ secrets.TARGET_REPO_PAT }}
 
-      # Etapa 3: Faz o checkout da branch `api` para atualizar com os dados raspados.
-      - name: Checkout to api branch and update
+      - name: Checkout to api branch and update # Etapa 3: Faz o checkout da branch `api` para atualizar com os dados raspados.
         run: |
-          cd Jop-API
+          cd Job-API
           git fetch origin
           git checkout -b api origin/api
 
-      # Etapa 4: Cria o diretório "Jop-API/data/results" caso ele não exista.
-      - name: Create data directory if not exists
-        run: mkdir -p Jop-API/data/results
+      - name: Create data directory if not exists # Etapa 4: Cria o diretório "Job-API/data/results" caso ele não exista.
+        run: mkdir -p Job-API/data/results
 
-      # Etapa 5: Configura o usuário Git para identificar o autor dos commits.
-      - name: Configure Git user
+      - name: Configure Git user # Etapa 5: Configura o usuário Git para identificar o autor dos commits.
         run: |
-          cd Jop-API
+          cd Job-API
           git config --global user.name "${{ secrets.GIT_USER_NAME }}"
           git config --global user.email "${{ secrets.GIT_USER_EMAIL }}"
 
-      # Etapa 6: Faz o merge da branch `main` na branch `api` usando a estratégia `theirs` para evitar conflitos.
-      - name: Merge main into api with theirs strategy
+      - name: Merge main into api with theirs strategy # Etapa 6: Faz o merge da branch `main` na branch `api` usando a estratégia `theirs` para evitar conflitos.
         run: |
-          cd Jop-API
+          cd Job-API
           git merge -X theirs origin/main || true
 
-      # Etapa 7: Define a branch `api` como upstream e faz push das mudanças para o repositório.
-      - name: Set upstream branch for api
+      - name: Set upstream branch for api # Etapa 7: Define a branch `api` como upstream e faz push das mudanças para o repositório.
         run: |
-          cd Jop-API
+          cd Job-API
           git branch --set-upstream-to=origin/api api
           git push https://${{ secrets.TARGET_REPO_PAT }}@github.com/${{ secrets.TARGET_REPO_URL }}.git HEAD:api
 
-      # Etapa 8: Baixa o artifact "Job-results" com os dados raspados do Job.
-      - name: Download Job artifact
+      - name: Download Job artifact # Etapa 8: Baixa o artifact "Job-results" com os dados raspados do Job.
         uses: actions/download-artifact@v4
         with:
           name: Job-results
-          path: Jop-API/data/results
+          path: Job-API/data/results
 
-      # Etapa 10: Executa o script `updateCoordinates.js` para atualizar coordenadas, usando a chave da API do Here Maps.
-      - name: Update coordinates
+      - name: Update coordinates # Etapa 10: Executa o script `updateCoordinates.js` para atualizar coordenadas, usando a chave da API do Here Maps.
         run: |
-          cd Jop-API
-          npm install                       # Instala dependências para rodar o script.
+          cd Job-API
+          npm install # Instala dependências para rodar o script.
           node scripts/updateCoordinates.js ${{ secrets.GEOCODE_HERE_API_KEY }} || echo "Script not found"
 
-      # Etapa 11: Faz commit das mudanças e push para a branch `api` no repositório `Jop-API`.
-      - name: Commit and push changes
+      - name: Commit and push changes # Etapa 11: Faz commit das mudanças e push para a branch `api` no repositório `Job-API`.
         run: |
-          cd Jop-API
-          git add .                         # Adiciona todas as mudanças.
-          git commit -m ":rocket: Update results folder"  # Commit com a mensagem personalizada.
+          cd Job-API
+          git add . # Adiciona todas as mudanças.
+          git commit -m ":rocket: Update results folder" # Commit com a mensagem personalizada.
           git push https://${{ secrets.TARGET_REPO_PAT }}@github.com/${{ secrets.TARGET_REPO_URL }}.git HEAD:api
         env:
           GITHUB_TOKEN: ${{ secrets.TARGET_REPO_PAT }}
