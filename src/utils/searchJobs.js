@@ -16,14 +16,13 @@ async function searchJobs() {
   try {
     const page = await browser.newPage();
     const ListSearch = [
-      // "front",
-      // "back",
-      // "fullstack",
-      // "devops",
-      // "mobile",
-      // "junior",
-      "java",
+
+      "estágio",
+      "segurança",
+      "cyber",
+      "security",
       "jr",
+      "junior",
     ];
 
     for (const url of urlList) {
@@ -88,7 +87,8 @@ async function searchJobs() {
     await browser.close();
 
     const dir = path.dirname(new URL(import.meta.url).pathname);
-    const filePath = path.join(dir, "jobResults.json");
+    const filePath = path.join(dir, "../../data/jobResults.json");
+
     fs.readFile(filePath, (err, data) => {
       let existingJobs = err ? [] : JSON.parse(data.toString());
 
