@@ -11,7 +11,6 @@ on:
   workflow_dispatch:         # Permite a execução manual do workflow.
 
 jobs:
-  # Job para executar o scraper do Job
   Job-scraper:
     runs-on: ubuntu-latest    # Define o ambiente do job como a última versão do Ubuntu.
 
