@@ -1,9 +1,8 @@
 import puppeteer from "puppeteer";
-import { urlList } from "../../link.js";
 import fs from "fs";
 import path from "path";
+import { urlList } from "../../link.js";
 
-// const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
 async function searchJobs() {
   const browser = await puppeteer.launch({
@@ -16,7 +15,6 @@ async function searchJobs() {
   try {
     const page = await browser.newPage();
     const ListSearch = [
-
       "estágio",
       "segurança",
       "cyber",
@@ -70,7 +68,6 @@ async function searchJobs() {
               return { nomeVaga, linkVaga, modeloVaga, data };
             });
           });
-          // delay(6);
           companyJobs.vagas.push(...vagas);
         } catch (err) {
           console.error(
