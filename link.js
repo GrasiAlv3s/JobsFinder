@@ -1,5 +1,8 @@
-export const urlList = ["https://institutoeldorado.gupy.io/"];
-export const urlList2 = [
+export const urlListTest = [{
+  name: "Techne",
+  link: "https://techne.gupy.io",
+}];
+export const urlList = [
   {
     name: "Techne",
     link: "https://techne.gupy.io",

@@ -3,26 +3,32 @@ import fs from "fs";
 import path from "path";
 import { urlList } from "../../link.js";
 
+const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
 async function searchJobs() {
   const browser = await puppeteer.launch({
     headless: false,
     defaultViewport: null,
     userDataDir: "/tmp/myChromeSession",
+    args: ["--no-sandbox", "--disable-setuid-sandbox"],
   });
 
   const newJobs = [];
   try {
     const page = await browser.newPage();
     const ListSearch = [
-      "estágio",
-      "segurança",
-      "cyber",
-      "security",
-      "jr",
+      // "front",
+      // "back",
+      // "fullstack",
+      // "devops",
+      // "mobile",
       "junior",
+      // "java",
+      "jr",
     ];
 
-    for (const url of urlList) {
+    // for (const url of urlList) {
+    for (const url of urlListTest) {
       const companyJobs = { empresa: url.name, vagas: [] };
       for (const query of ListSearch) {
         try {
@@ -69,6 +75,7 @@ async function searchJobs() {
               };
             });
           });
+          delay(6);
           companyJobs.vagas.push(...vagas);
         } catch (err) {
           console.error(
@@ -77,7 +84,6 @@ async function searchJobs() {
         }
       }
 
-      console.log(companyJobs);
       newJobs.push(companyJobs);
     }
   } catch (err) {
@@ -86,10 +92,29 @@ async function searchJobs() {
     await browser.close();
 
     const dir = path.dirname(new URL(import.meta.url).pathname);
-    const filePath = path.join(dir, "../../data/jobResults.json");
+    const dataDir = path.join(dir, "../../data"); // Definindo dataDir aqui
+    const filePath = path.join(dataDir, "jobResults.json");
+
+    // Verifica se a pasta 'data' existe, se não, cria a pasta
+    if (!fs.existsSync(dataDir)) {
+      fs.mkdirSync(dataDir, { recursive: true });
+    }
+
+    // Verifica se o arquivo 'jobResults.json' existe, se não, cria o arquivo com um array vazio
+    if (!fs.existsSync(filePath)) {
+      fs.writeFileSync(filePath, JSON.stringify([], null, 2));
+    }
 
     fs.readFile(filePath, (err, data) => {
-      const existingJobs = err ? [] : JSON.parse(data.toString());
+      let existingJobs;
+      try {
+        existingJobs = JSON.parse(data.toString());
+        if (!Array.isArray(existingJobs)) {
+          throw new Error("Invalid data format");
+        }
+      } catch (err) {
+        existingJobs = [];
+      }
 
       for (const newJob of newJobs) {
         const existingCompany = existingJobs.find(
