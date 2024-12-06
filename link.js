@@ -1,9 +1,9 @@
-export const urlTest = "https://institutoeldorado.gupy.io/";
-export const urlList = [
+export const urlList = ["https://institutoeldorado.gupy.io/"];
+export const urlList2 = [
   {
     name: "Techne",
     link: "https://techne.gupy.io",
-  },
+  } 
   {
     name: "Cielo",
     link: "https://cielo.gupy.io",
@@ -52,10 +52,7 @@ export const urlList = [
     name: "Programas Embraer",
     link: "https://programasembraer.gupy.io",
   },
-  {
-    name: "Hilab",
-    link: "https://hilab.gupy.io",
-  },
+ 
   {
     name: "Open Labs",
     link: "https://openlabs.gupy.io",
@@ -88,10 +85,7 @@ export const urlList = [
     name: "Giro.Tech",
     link: "https://girotech.gupy.io",
   },
-  {
-    name: "Tiny",
-    link: "https://tiny.gupy.io",
-  },
+   
   {
     name: "Corporativo Grupo Panvel | Corporativo",
     link: "https://corporativopanvel.gupy.io",
@@ -100,10 +94,7 @@ export const urlList = [
     name: "Carreiras nScreen",
     link: "https://nscreen.gupy.io",
   },
-  {
-    name: "Pontotel",
-    link: "https://pontotel.gupy.io",
-  },
+  
   {
     name: "Minsait an Indra Company",
     link: "https://minsait.gupy.io",
@@ -192,10 +183,7 @@ export const urlList = [
     name: "FCamara",
     link: "https://fcamara.gupy.io",
   },
-  {
-    name: "Programa de Estágio 2023",
-    link: "https://programaestagdrc2023.gupy.io",
-  },
+  
   {
     name: "Ecossistema Ahgora",
     link: "https://ahgora.gupy.io",
@@ -204,10 +192,7 @@ export const urlList = [
     name: "Radix Engenharia e Software",
     link: "https://radixeng.gupy.io",
   },
-  {
-    name: "Ada Tech",
-    link: "https://adatech.gupy.io",
-  },
+  
   {
     name: "Cacau Show",
     link: "https://cacaushow.gupy.io",
@@ -260,18 +245,12 @@ export const urlList = [
     name: "Programa de Estágio Eurofarma - 2024",
     link: "https://programaestagioeurofarma.gupy.io",
   },
-  {
-    name: "Jornada Bemobi 2024",
-    link: "https://jornadabemobi.gupy.io",
-  },
+  
   {
     name: "v(dev)",
     link: "https://vdev.gupy.io",
   },
-  {
-    name: "Programa de Estágio Cielo 2024.2",
-    link: "https://programadeestagiocielo.gupy.io",
-  },
+   
   {
     name: "Solutis",
     link: "https://solutis.gupy.io",
@@ -340,10 +319,7 @@ export const urlList = [
     name: "Rede Bandeirantes",
     link: "https://bandeirantes.gupy.io",
   },
-  {
-    name: "Semantix",
-    link: "https://semantix.gupy.io",
-  },
+ 
   {
     name: "Page Outsourcing Brasil",
     link: "https://pageoutsourcingbr.gupy.io",
@@ -416,10 +392,7 @@ export const urlList = [
     name: "Grupo SBF Talentos",
     link: "https://gruposbftalentos.gupy.io",
   },
-  {
-    name: "Incentivar Jobs",
-    link: "https://incentivar.gupy.io",
-  },
+  
   {
     name: "Carbel Auto Group",
     link: "https://grupocarbel.gupy.io",
@@ -432,10 +405,7 @@ export const urlList = [
     name: "Just a Little Data",
     link: "https://justalittledata.gupy.io",
   },
-  {
-    name: "Zitrus Healthtech",
-    link: "https://sejaumzitrino.gupy.io",
-  },
+
   {
     name: "LBCA - Lee, Brock, Camargo Advogados",
     link: "https://lbca.gupy.io",
@@ -468,10 +438,7 @@ export const urlList = [
     name: "Cia Hering",
     link: "https://ciahering.gupy.io",
   },
-  {
-    name: "Clariens Educação",
-    link: "https://clariens.gupy.io",
-  },
+ 
   {
     name: "Pagina de Carreia Confidencial",
     link: "https://rhmanaus.gupy.io",
