@@ -3,7 +3,8 @@ export const urlList2 = [
   {
     name: "Techne",
     link: "https://techne.gupy.io",
-  } 
+  },
+
   {
     name: "Cielo",
     link: "https://cielo.gupy.io",
@@ -52,7 +53,7 @@ export const urlList2 = [
     name: "Programas Embraer",
     link: "https://programasembraer.gupy.io",
   },
- 
+
   {
     name: "Open Labs",
     link: "https://openlabs.gupy.io",
@@ -85,7 +86,7 @@ export const urlList2 = [
     name: "Giro.Tech",
     link: "https://girotech.gupy.io",
   },
-   
+
   {
     name: "Corporativo Grupo Panvel | Corporativo",
     link: "https://corporativopanvel.gupy.io",
@@ -94,7 +95,7 @@ export const urlList2 = [
     name: "Carreiras nScreen",
     link: "https://nscreen.gupy.io",
   },
-  
+
   {
     name: "Minsait an Indra Company",
     link: "https://minsait.gupy.io",
@@ -183,7 +184,7 @@ export const urlList2 = [
     name: "FCamara",
     link: "https://fcamara.gupy.io",
   },
-  
+
   {
     name: "Ecossistema Ahgora",
     link: "https://ahgora.gupy.io",
@@ -192,7 +193,7 @@ export const urlList2 = [
     name: "Radix Engenharia e Software",
     link: "https://radixeng.gupy.io",
   },
-  
+
   {
     name: "Cacau Show",
     link: "https://cacaushow.gupy.io",
@@ -245,12 +246,12 @@ export const urlList2 = [
     name: "Programa de Estágio Eurofarma - 2024",
     link: "https://programaestagioeurofarma.gupy.io",
   },
-  
+
   {
     name: "v(dev)",
     link: "https://vdev.gupy.io",
   },
-   
+
   {
     name: "Solutis",
     link: "https://solutis.gupy.io",
@@ -319,7 +320,7 @@ export const urlList2 = [
     name: "Rede Bandeirantes",
     link: "https://bandeirantes.gupy.io",
   },
- 
+
   {
     name: "Page Outsourcing Brasil",
     link: "https://pageoutsourcingbr.gupy.io",
@@ -392,7 +393,7 @@ export const urlList2 = [
     name: "Grupo SBF Talentos",
     link: "https://gruposbftalentos.gupy.io",
   },
-  
+
   {
     name: "Carbel Auto Group",
     link: "https://grupocarbel.gupy.io",
@@ -438,7 +439,7 @@ export const urlList2 = [
     name: "Cia Hering",
     link: "https://ciahering.gupy.io",
   },
- 
+
   {
     name: "Pagina de Carreia Confidencial",
     link: "https://rhmanaus.gupy.io",
