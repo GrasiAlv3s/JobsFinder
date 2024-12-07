@@ -37,6 +37,7 @@ jobs:
         run: |
           Xvfb :99 -ac & # Inicia o servidor Xvfb.
           export DISPLAY=:99 # Define o display para o navegador.
+          rm -rf /tmp/myChromeSession/SingletonLock
           node src/sever.js # Executa o script do scraper Job.
 
       - name: Save Job results and screenshots as an artifact # Etapa 7: Salva os resultados e capturas de tela como um artifact chamado "Job-results" para serem usados em outros jobs.
