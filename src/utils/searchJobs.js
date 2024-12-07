@@ -1,7 +1,7 @@
 import puppeteer from "puppeteer";
 import fs from "fs";
 import path from "path";
-import { urlList } from "../../link.js";
+import { urlListTest } from "../../link.js";
 
 const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
